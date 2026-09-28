@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mining Rover - Live Camera</title>
+  <style>
+    body { background-color: #0d0d0d; color: #fff; font-family: monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    h1 { color: #76b900; }
+    .stream-box { border: 2px solid #282828; border-radius: 4px; overflow: hidden; background: #000; }
+  </style>
+</head>
+<body>
+  <h1>Live camera stream</h1>
+  <div class="stream-box">
+    <img src="/api/vision/camera/stream" alt="Live camera feed" onerror="this.alt='Camera feed offline or unavailable';" />
+  </div>
+</body>
+</html>

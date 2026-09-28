@@ -1,0 +1,60 @@
+[Unit]
+Description=Mining Rover Autonomous Console — FastAPI Backend
+Documentation=https://github.com/your-org/mining-rover-software
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+# ── Identity ──────────────────────────────────────────────────────────────
+# Run as a dedicated non-root user.
+# Create this user on the Pi before installing:
+#   sudo useradd -r -s /bin/false -d /home/rover rover
+#   sudo chown -R rover:rover /home/rover/mining_rover
+User=rover
+Group=rover
+
+# ── Working directory ─────────────────────────────────────────────────────
+# Must be the project root directory on the Pi.
+# Adjust this path to match your actual deployment location.
+WorkingDirectory=/home/rover/mining_rover
+
+# ── Environment ───────────────────────────────────────────────────────────
+# Load runtime configuration from a non-committed .env file.
+EnvironmentFile=/home/rover/mining_rover/.env
+
+# ── Command ───────────────────────────────────────────────────────────────
+# Use the virtual environment Python explicitly.
+# The --health-report flag prints a startup diagnostics summary to journald.
+ExecStart=/home/rover/mining_rover/.venv/bin/python start_rover.py --health-report
+
+# ── Restart behavior ──────────────────────────────────────────────────────
+Restart=on-failure
+RestartSec=5s
+# Maximum restart attempts within 10 minutes before giving up
+StartLimitInterval=600
+StartLimitBurst=5
+
+# ── Logging ───────────────────────────────────────────────────────────────
+# All stdout/stderr goes to journald.
+# View with: journalctl -u mining-rover -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mining-rover
+
+# ── Resource limits ───────────────────────────────────────────────────────
+# Protect against runaway memory consumption on the Pi.
+MemoryMax=6G
+# Give YOLO inference time to load without being killed as a slow starter.
+TimeoutStartSec=120
+
+# ── Security hardening (systemd best practices) ───────────────────────────
+# Prevent writing to the wider filesystem.
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/rover/mining_rover/database \
+               /home/rover/mining_rover/logs \
+               /home/rover/mining_rover/data
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  :root {
+    /* Industrial Command Surface System */
+    --bg-canvas: #08090B;
+    --surface-1: #101216;
+    --surface-2: #15181D;
+    --surface-3: #1B1F25;
+    --surface-hover: #191D24;
+
+    /* Hairline & Border Scale (Subtle, Restrained) */
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --border-default: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.12);
+
+    /* Typography Hierarchy */
+    --text-primary: #F4F6F8;
+    --text-secondary: #A7ADB7;
+    --text-muted: #707783;
+    --text-faint: #4B525E;
+
+    /* Restrained Industrial Accent Palette */
+    --accent-primary: #18C7D8;
+    --accent-soft: rgba(24, 199, 216, 0.10);
+    --accent-border: rgba(24, 199, 216, 0.25);
+
+    /* Semantic State Indicators */
+    --state-success: #24C88A;
+    --state-warning: #E8B84A;
+    --state-critical: #EF5350;
+    --state-offline: #707783;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    background-color: #08090B !important;
+    color: #F4F6F8 !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    overflow-x: hidden;
+  }
+
+  /* Body & General Elements use clean Inter sans-serif */
+  body, button, input, select, textarea, p, span, div, a, label {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Monospace ONLY for telemetry values, timestamps, IDs, technical codes */
+  .font-mono, [class*="font-mono"], code, kbd, samp, pre, .tnum, th, td, .font-data {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-feature-settings: "tnum" 1, "zero" 1 !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.25;
+  }
+}
+
+/* =========================================================================
+   REFINED SURFACE & PANEL ARCHITECTURE
+   ========================================================================= */
+
+/* Standard Industrial Panel: 12px radius, subtle border, charcoal background */
+.nv-card {
+  background-color: #101216;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.nv-card:hover {
+  background-color: #13161c;
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Elevated Nested Surface */
+.nv-card-elevated {
+  background-color: #15181D;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+/* Clean Category Eyebrow Typography */
+.nv-eyebrow {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #A7ADB7;
+}
+
+/* Buttons */
+.nv-btn-primary {
+  background-color: #18C7D8;
+  color: #08090B;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.25;
+  border-radius: 6px;
+  padding: 7px 15px;
+  transition: background-color 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.nv-btn-primary:hover {
+  background-color: #15b3c3;
+}
+
+.nv-btn-outline {
+  background-color: #15181D;
+  color: #F4F6F8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
+  font-size: 13px;
+  border-radius: 6px;
+  padding: 7px 15px;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nv-btn-outline:hover {
+  background-color: #1B1F25;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Restrained Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08090B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1B1F25;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #252B33;
+}

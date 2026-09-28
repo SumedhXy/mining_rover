@@ -1,0 +1,31 @@
+# Mining Rover Phase 2 Decision Engine Configuration Thresholds
+# Initial software defaults - not certified mining safety limits.
+
+temperature:
+  warning_c: 45.0
+  high_c: 55.0
+  critical_c: 65.0
+
+mq4:
+  warning: 0.40
+  high: 0.60
+  critical: 0.80
+
+mq135:
+  warning: 0.40
+  high: 0.60
+  critical: 0.80
+
+pressure:
+  minimum_hpa: 850.0
+  maximum_hpa: 1100.0
+
+vision:
+  minimum_confidence: 0.50
+
+persistence:
+  required_readings: 3
+
+data_freshness:
+  sensor_max_age_seconds: 5.0
+  vision_max_age_seconds: 2.0

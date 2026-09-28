@@ -1,0 +1,42 @@
+# ===========================================================================
+# Mining Rover Software — Core Runtime Dependencies
+# Phase 7A — Raspberry Pi Deployment Preparation
+# ===========================================================================
+# This file lists ONLY the direct production runtime dependencies.
+# It does NOT include development, test, or optional hardware packages.
+#
+# Install for production (Raspberry Pi):
+#   pip install -r requirements.txt
+#
+# NOTE: torch and opencv-python have ARM64/Pi-specific installation steps.
+# See deployment/README.md → "ARM64 / Raspberry Pi Compatibility Notes".
+# ===========================================================================
+
+# ── Web Framework ──────────────────────────────────────────────────────────
+fastapi>=0.100
+uvicorn>=0.23
+
+# ── Data Validation ────────────────────────────────────────────────────────
+pydantic>=2.0
+
+# ── Configuration ──────────────────────────────────────────────────────────
+PyYAML>=6.0
+
+# ── File Uploads (FastAPI multipart) ──────────────────────────────────────
+python-multipart>=0.0.9
+
+# ── Vision: Image I/O ─────────────────────────────────────────────────────
+# Pillow: used by yolo_service.py for image pre-processing before inference.
+Pillow>=10.0
+
+# ── Vision: YOLO Inference ────────────────────────────────────────────────
+# ultralytics: YOLO v8/v11 model loading and inference.
+# Depends on torch + torchvision + opencv-python (see notes below).
+# ARM64 NOTE: Install torch FIRST using the Pi-specific wheel index.
+# Do NOT rely on `pip install ultralytics` to pull a compatible torch on Pi.
+ultralytics>=8.3
+
+# ── Sensor Hardware (serial) ──────────────────────────────────────────────
+# pyserial: used by sensors/esp32_receiver.py.
+# Imported with a graceful ImportError fallback — optional if no ESP32.
+pyserial>=3.5

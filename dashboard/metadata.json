@@ -1,0 +1,6 @@
+{
+  "name": "Mining Rover Telemetry Dashboard",
+  "description": "Real-time monitoring and telemetry dashboard for the autonomous mining rover featuring sensor analytics, YOLO vision detections, decision engine hazard assessments, and offline-first operation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

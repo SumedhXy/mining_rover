@@ -1,0 +1,26 @@
+database:
+  path: "./database/mining_rover.db"
+
+backend:
+  host: "0.0.0.0"
+  port: 8000
+
+sync:
+  enabled: true
+  server_url: "http://127.0.0.1:8000/api/sync/receive"
+  health_check_url: "http://127.0.0.1:8000/api/system/status"
+  check_interval: 5.0
+  retry_interval: 10.0
+  batch_size: 50
+  max_retry_delay: 60.0
+  timeout_seconds: 4.0
+
+vision:
+  model: "./vision/weights/best.pt"
+  camera_index: 0
+  confidence_threshold: 0.50
+
+decision_engine:
+  min_confidence: 0.20
+  sensor_weight: 0.50
+  vision_weight: 0.50

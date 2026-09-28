@@ -1,0 +1,17 @@
+# UI Improvement Skills & Styling Reference
+
+This document tracks installed and active UI design skills in the `Mining_Rover_software` repository:
+
+1. **`anti-ui-slop`** (`.agents/skills/anti-ui-slop/SKILL.md`):
+   - Grounding interfaces in real screens.
+   - Eliminating generic AI slop, fake widgets, and meaningless gradients.
+   - Enforcing industrial contrast, tabular monospaced numbers, and explicit error states.
+   - Covering complete product states (nominal, warning, critical hazard, offline, and stream reconnection).
+
+2. **`ui-styling`** (`.agents/skills/ui-styling/SKILL.md`):
+   - Utility-first Tailwind CSS design system and tokens.
+   - Clean component composition and consistent spacing scales.
+   - Tactical dark-mode palette (`#000000`, `#0d0d0d`, `#141414`, `#1a1a1a`, `#282828`).
+   - High-contrast visual accents (`#76b900` nominal, `#df6500` warning, `#e52020` hazard).
+   - Responsive layouts optimized for laptop, desktop, and industrial field displays (1366x768, 1440x900, 1920x1080).
+   - ARIA accessibility, focus states, and keyboard navigation (`1`–`4` shortcuts).
