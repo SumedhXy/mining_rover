@@ -16,6 +16,17 @@ class DatabaseConfig:
 class BackendConfig:
     host: str = "0.0.0.0"
     port: int = 8000
+    cors_origins: list[str] = field(
+        default_factory=lambda: [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://192.168.50.1:3000",
+            "http://192.168.50.1:5173",
+            "http://192.168.50.1",
+        ]
+    )
 
 
 @dataclass
@@ -54,8 +65,8 @@ class RoverConfig:
 
 
 def load_config(config_path: Optional[str] = None) -> RoverConfig:
+    project_root = Path(__file__).resolve().parents[1]
     if config_path is None:
-        project_root = Path(__file__).resolve().parents[1]
         default_yaml = project_root / "config" / "config.yaml"
         if default_yaml.exists():
             config_path = str(default_yaml)
@@ -76,13 +87,40 @@ def load_config(config_path: Optional[str] = None) -> RoverConfig:
     vision_data = raw_data.get("vision", {})
     de_data = raw_data.get("decision_engine", {})
 
-    db_cfg = DatabaseConfig(
-        path=os.getenv("ROVER_DB_PATH", db_data.get("path", "./database/mining_rover.db"))
-    )
+    # Resolve database path (relative to project root if not absolute)
+    raw_db_path = os.getenv("ROVER_DB_PATH", db_data.get("path", "./database/mining_rover.db"))
+    db_p = Path(raw_db_path)
+    if not db_p.is_absolute():
+        resolved_db_path = str((project_root / db_p).resolve())
+    else:
+        resolved_db_path = str(db_p)
+
+    db_cfg = DatabaseConfig(path=resolved_db_path)
+
+    # CORS origins
+    cors_env = os.getenv("CORS_ORIGINS", os.getenv("ROVER_ALLOWED_ORIGINS"))
+    if cors_env:
+        cors_list = [orig.strip() for orig in cors_env.split(",") if orig.strip()]
+    else:
+        cors_list = backend_data.get(
+            "cors_origins",
+            [
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "http://192.168.50.1:3000",
+                "http://192.168.50.1:5173",
+                "http://192.168.50.1",
+            ],
+        )
+
     backend_cfg = BackendConfig(
         host=os.getenv("ROVER_BACKEND_HOST", backend_data.get("host", "0.0.0.0")),
         port=int(os.getenv("ROVER_BACKEND_PORT", backend_data.get("port", 8000))),
+        cors_origins=cors_list,
     )
+
     sync_cfg = SyncConfig(
         enabled=os.getenv("ROVER_SYNC_ENABLED", str(sync_data.get("enabled", True))).lower() in ("true", "1", "yes"),
         server_url=os.getenv("ROVER_SYNC_SERVER_URL", sync_data.get("server_url", "http://127.0.0.1:8000/api/sync/receive")),
@@ -93,8 +131,16 @@ def load_config(config_path: Optional[str] = None) -> RoverConfig:
         max_retry_delay=float(sync_data.get("max_retry_delay", 60.0)),
         timeout_seconds=float(sync_data.get("timeout_seconds", 4.0)),
     )
+
+    raw_model_path = os.getenv("ROVER_VISION_MODEL", vision_data.get("model", "./vision/weights/best.pt"))
+    model_p = Path(raw_model_path)
+    if not model_p.is_absolute():
+        resolved_model_path = str((project_root / model_p).resolve())
+    else:
+        resolved_model_path = str(model_p)
+
     vision_cfg = VisionConfig(
-        model=os.getenv("ROVER_VISION_MODEL", vision_data.get("model", "./vision/weights/best.pt")),
+        model=resolved_model_path,
         camera_index=int(vision_data.get("camera_index", 0)),
         confidence_threshold=float(vision_data.get("confidence_threshold", 0.50)),
     )
